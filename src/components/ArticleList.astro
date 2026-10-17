@@ -1,0 +1,29 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { pillars } from "../data";
+import { formatDate } from "../lib";
+interface Props {
+  articles: CollectionEntry<"writing">[];
+}
+const { articles } = Astro.props;
+---
+
+<div class="article-list">
+  {articles.map((article) => (
+    <a class="article-row" href={`/writing/${article.id}/`}>
+      <span class="article-meta">
+        {pillars.find((p) => p.id === article.data.category)?.title}
+        <br />
+        <time datetime={article.data.date}>
+          {formatDate(article.data.date)}
+        </time>
+      </span>
+      <div>
+        <h3>{article.data.title}</h3>
+        <p>{article.data.description}</p>
+        <span class="tagline">{article.data.tags.join(" / ")}</span>
+      </div>
+      <span aria-hidden="true">↗</span>
+    </a>
+  ))}
+</div>

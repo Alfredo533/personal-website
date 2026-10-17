@@ -1,0 +1,75 @@
+---
+import "../styles/global.css";
+interface Props {
+  title: string;
+  description?: string;
+}
+const {
+  title,
+  description = "主动设计自己的人生。关于财富、健康与独立思考的长期探索。",
+} = Astro.props;
+const path = Astro.url.pathname;
+const nav = [
+  { href: "/", en: "Home", zh: "首页" },
+  { href: "/writing/", en: "Writing", zh: "文章" },
+  { href: "/projects/", en: "Projects", zh: "项目" },
+  { href: "/about/", en: "About", zh: "关于" },
+];
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f5f3ec" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} · Human 3.0</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      跳到正文
+    </a>
+    <header class="site-header wrap">
+      <a class="wordmark" href="/" aria-label="Human 3.0 首页">
+        human<span>3.0</span>
+        <i aria-hidden="true"></i>
+      </a>
+      <nav aria-label="主导航">
+        {nav.map((item) => (
+          <a
+            href={item.href}
+            aria-current={
+              (item.href === "/" ? path === "/" : path.startsWith(item.href))
+                ? "page"
+                : undefined
+            }
+          >
+            <span>{item.en}</span>
+            <span class="nav-zh">{item.zh}</span>
+          </a>
+        ))}
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer wrap">
+      <div>
+        <a class="footer-brand" href="/">
+          Human 3.0
+        </a>
+        <p>自由地创造，持续地探索。</p>
+      </div>
+      <p class="footer-note">
+        一个持续生长的个人空间
+        <br />
+        Growth is not the destination.
+      </p>
+      <a href="/about/#contact">
+        保持联系 <span aria-hidden="true">↗</span>
+      </a>
+    </footer>
+  </body>
+</html>

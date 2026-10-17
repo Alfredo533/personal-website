@@ -1,0 +1,58 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { pillars } from "../../../data";
+import { publicArticles } from "../../../lib";
+import ArticleList from "../../../components/ArticleList.astro";
+export function getStaticPaths() {
+  return pillars.map((pillar) => ({
+    params: { category: pillar.id },
+    props: { pillar },
+  }));
+}
+const { pillar } = Astro.props;
+const articles = (await publicArticles()).filter(
+  (a) => a.data.category === pillar.id,
+);
+---
+
+<Base title={pillar.title}>
+  <div class="wrap page-top">
+    <a class="breadcrumb" href="/writing/">
+      ← 全部文章
+    </a>
+    <p class="eyebrow">{pillar.english}</p>
+    <h1>{pillar.title}</h1>
+    <p class="page-intro">{pillar.description}</p>
+  </div>
+  <section class="wrap writing-section">
+    <nav class="filters" aria-label="文章分类">
+      <a href="/writing/">全部</a>
+      {pillars.map((p) => (
+        <a
+          href={`/writing/category/${p.id}/`}
+          aria-current={p.id === pillar.id ? "page" : undefined}
+        >
+          {p.title}
+        </a>
+      ))}
+    </nav>
+    {articles.length ? (
+      <ArticleList articles={articles} />
+    ) : (
+      <div class="empty-state spacious">
+        <div>
+          <h2>这个主题的文字，正在酝酿。</h2>
+          <p>目前还没有在本站公开的文章。</p>
+        </div>
+      </div>
+    )}
+    <div class="topic-note">
+      <p class="eyebrow">持续关注的问题</p>
+      <ul>
+        {pillar.topics.map((topic) => (
+          <li>{topic}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

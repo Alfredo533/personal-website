@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+.env
+.env.*
+!.env.example
+.local/
+test-results/
+playwright-report/
+# Private workspace material is forbidden in this public repository.
+context/
+daily/
+entries/
+ideas/
+drafts/
+experiments/
+published/
+reviews/
+knowledge/
+*.pem
+*.key
